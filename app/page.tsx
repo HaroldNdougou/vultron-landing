@@ -15,21 +15,27 @@ export default function Page() {
     e.preventDefault();
     setLoading(true);
 
-    await fetch("/api/lead", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        company,
-        website,
-      }),
-    });
+    try {
+      await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          company,
+          website,
+        }),
+      });
+
+      alert("Report request sent 🚀");
+
+      setEmail("");
+      setCompany("");
+      setWebsite("");
+    } catch (err) {
+      alert("Error sending request");
+    }
 
     setLoading(false);
-
-    alert("Request sent 🚀");
   }
 
   return (
@@ -49,13 +55,13 @@ export default function Page() {
         </h1>
 
         <p className="mt-6 text-gray-400 text-lg max-w-2xl mx-auto">
-          Vultron scans your public infrastructure like a real attacker and
-          reveals exploitable weaknesses in under 48 hours.
+          Vultron scans your public infrastructure like an attacker and reveals
+          exploitable weaknesses in under 48 hours.
         </p>
 
       </section>
 
-      {/* FORMULAIRE (CONVERSION CORE) */}
+      {/* FORM */}
       <section className="max-w-xl mx-auto px-6">
 
         <Card className="bg-gray-900 border-gray-800">
@@ -72,7 +78,6 @@ export default function Page() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Work email"
                 className="w-full p-3 bg-black border border-gray-700 rounded"
-                required
               />
 
               <input
@@ -80,7 +85,6 @@ export default function Page() {
                 onChange={(e) => setCompany(e.target.value)}
                 placeholder="Company name"
                 className="w-full p-3 bg-black border border-gray-700 rounded"
-                required
               />
 
               <input
@@ -88,13 +92,11 @@ export default function Page() {
                 onChange={(e) => setWebsite(e.target.value)}
                 placeholder="Website URL"
                 className="w-full p-3 bg-black border border-gray-700 rounded"
-                required
               />
 
               <Button
-                type="submit"
-                disabled={loading}
                 className="w-full bg-red-500 hover:bg-red-600 py-6 text-lg"
+                disabled={loading}
               >
                 {loading ? "Sending..." : "Get Security Report"}
               </Button>
@@ -107,20 +109,6 @@ export default function Page() {
 
           </CardContent>
         </Card>
-
-      </section>
-
-      {/* PROBLEM */}
-      <section className="max-w-5xl mx-auto px-6 py-20 text-center">
-
-        <h2 className="text-3xl font-bold">
-          Most companies are already exposed without knowing it
-        </h2>
-
-        <p className="mt-4 text-gray-400">
-          Open ports, forgotten subdomains, misconfigured services —
-          attackers see them first.
-        </p>
 
       </section>
 
@@ -159,7 +147,7 @@ export default function Page() {
 
       </section>
 
-      {/* CTA FINAL */}
+      {/* CTA */}
       <section className="max-w-4xl mx-auto px-6 py-24 text-center">
 
         <h2 className="text-3xl font-bold">
@@ -170,10 +158,7 @@ export default function Page() {
           Delivered in 24–48 hours. No integration required.
         </p>
 
-        <Button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="mt-8 px-8 py-6 text-lg bg-red-500 hover:bg-red-600"
-        >
+        <Button className="mt-8 px-8 py-6 text-lg bg-red-500 hover:bg-red-600">
           Start Scan Now
         </Button>
 

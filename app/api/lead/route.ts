@@ -1,18 +1,25 @@
 import { NextResponse } from "next/server";
+import { supabase } from "@/lib/supabase";
 
 export async function POST(req: Request) {
   const body = await req.json();
 
   const { email, company, website } = body;
 
-  console.log("NEW LEAD 🔥", {
-    email,
-    company,
-    website,
-    time: new Date().toISOString(),
-  });
+  const { error } = await supabase.from("leads").insert([
+    {
+      email,
+      company,
+      website,
+    },
+  ]);
 
-  // ici plus tard: Notion / DB / email
+  if (error) {
+    return NextResponse.json(
+      { success: false, error: error.message },
+      { status: 500 }
+    );
+  }
 
   return NextResponse.json({ success: true });
 }
